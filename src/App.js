@@ -86,6 +86,9 @@ class App extends Component {
       body > div > div > div.login-form {
         height: 100%;
       }
+      ui.statistic value {
+        font-size: 5em!important;
+      }
     `}</style>
 
           <Grid centered columns={2}>
