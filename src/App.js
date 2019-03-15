@@ -5,8 +5,9 @@ import StartButton from './components/StartButton';
 import TimerWarningInput from './components/TimerWarningInput';
 // import './App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Container, Grid, Segment } from 'semantic-ui-react';
+import { Grid, Form } from 'semantic-ui-react';
 import TimerCleanupInput from './components/TimerCleanupInput';
+import TimerInterface from './components/TimerInterface';
 
 // import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
@@ -17,7 +18,8 @@ class App extends Component {
       seconds: '00',
       minutes: '15',
       warning: '14',
-      clearnup: '1',
+      cleanup: '1',
+      secondsRemaining: null,
       isClicked: false
     };
     this.secondsRemaining = null;
@@ -37,10 +39,12 @@ class App extends Component {
   tick() {
     var min = Math.floor(this.secondsRemaining / 60);
     var sec = this.secondsRemaining - min * 60;
+    console.log('seconds remaining ', this.secondsRemaining);
 
     this.setState({
       minutes: min,
-      seconds: sec
+      seconds: sec,
+      secondsRemaining: this.secondsRemaining
     });
 
     if (sec < 10) {
@@ -72,7 +76,9 @@ class App extends Component {
   }
 
   render() {
-    const { minutes, warning, seconds, isClicked } = this.state;
+    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup } = this.state;
+    let percentRemaining = Math.round((secondsRemaining / 900) * 100);
+    // console.log('percent remaing', percentRemaining);
 
     let backGroundColor = '#333';
     if (minutes < warning) {
@@ -94,11 +100,16 @@ class App extends Component {
 
           <Grid centered columns={2}>
             <Grid.Column textAlign="center">
-              <div style={{ backgroundColor: backGroundColor }}>
+              <div>
                 <div className="row">
                   <div className="col-md-4" />
                   <div className="col-md-4">
-                    <Timer minutes={this.state.minutes} seconds={this.state.seconds} />
+                    <TimerInterface
+                      percentRemaining={percentRemaining}
+                      minutes={this.state.minutes}
+                      seconds={this.state.seconds}
+                    />
+                    {/* <Timer minutes={this.state.minutes} seconds={this.state.seconds} /> */}
                   </div>
                 </div>
               </div>
@@ -108,32 +119,28 @@ class App extends Component {
       );
     } else {
       return (
-        <div>
-          <style>{`
-      body > div,
-      body > div > div,
-      body > div > div > div.login-form {
-        height: 100%;
-      }
-    `}</style>
+        // <div>
+        //   <style>{`
+        //   body > div,
+        //   body > div > div,
+        //   body > div > div > div.login-form {
+        //     height: 100%;
+        //   }
+        // `}</style>
 
-          <Grid centered style={{ height: '100%' }} verticalAlign="middle">
-            <Grid.Column textAlign="center">
-              <div>
-                <div className="row">
-                  <div className="col-md-4" />
-                  <div className="col-md-4">
-                    <TimerInput minutes={this.state.minutes} handleChange={this.handleChange} />
-                    <TimerWarningInput warning={warning} handleChange={this.handleChange} />
-                    <TimerCleanupInput />
-                    {/* <Timer minutes={minutes} seconds={seconds} /> */}
-                    <StartButton startCountDown={this.startCountDown} minutes={minutes} />
-                  </div>
-                </div>
-              </div>
+        <Grid verticalAlign="middle" columns={4} centered>
+          <Grid.Row>
+            <Grid.Column>
+              <Form>
+                <TimerInput minutes={this.state.minutes} handleChange={this.handleChange} />
+                <TimerWarningInput warning={warning} handleChange={this.handleChange} />
+                <TimerCleanupInput cleanup={cleanup} handleChange={this.handleChange} />
+                <StartButton startCountDown={this.startCountDown} minutes={minutes} />
+              </Form>
             </Grid.Column>
-          </Grid>
-        </div>
+          </Grid.Row>
+        </Grid>
+        // </div>
       );
     }
   }

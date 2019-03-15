@@ -1,21 +1,22 @@
 import React from 'react';
-import { Input, Label } from 'semantic-ui-react';
+import { Form, Input } from 'semantic-ui-react';
 
 const TimerWarningInput = props => {
   return (
-    <Input
-      labelPosition="right"
-      placeholder="15"
-      type="number"
-      name="warning"
-      value={props.warning}
-      onChange={props.handleChange}
-      required
-    >
-      <Label basic>Warning</Label>
-      <input />
-      <Label>:00</Label>
-    </Input>
+    <Form.Group>
+      <Input
+        inline
+        label="Warning"
+        // icon="stopwatch"
+        position="left"
+        control="input"
+        placeholder="warning"
+        type="text"
+        name="warning"
+        value={props.warning}
+        onChange={props.handleChange}
+      />
+    </Form.Group>
   );
 };
 

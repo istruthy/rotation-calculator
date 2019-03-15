@@ -1,23 +1,20 @@
 import React from 'react';
-import { Input, Label } from 'semantic-ui-react';
+import { Form, Input } from 'semantic-ui-react';
 
 const TimerInput = props => {
   return (
-    <div>
+    <Form.Group>
       <Input
-        labelPosition="right"
-        placeholder="15"
+        inline
+        label="Minutes"
+        control="input"
+        placeholder="minutes"
         type="number"
         name="minutes"
         value={props.minutes}
         onChange={props.handleChange}
-        required
-      >
-        <Label basic>Minutes</Label>
-        <input />
-        <Label>:00</Label>
-      </Input>
-    </div>
+      />
+    </Form.Group>
   );
 };
 

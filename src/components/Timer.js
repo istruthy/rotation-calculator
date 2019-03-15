@@ -5,7 +5,7 @@ const Timer = props => {
   return (
     <Statistic>
       <Statistic.Value>
-        <Icon name="clock outline" size="huge" />
+        {/* <Icon name="clock outline" size="huge" /> */}
         <div class="ui huge header">
           {props.minutes}:{props.seconds}
         </div>
