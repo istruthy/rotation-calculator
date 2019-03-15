@@ -5,6 +5,7 @@ import 'react-circular-progressbar/dist/styles.css';
 const percentage = 66;
 
 const TimerInterface = props => {
+  let backGroundColor = props.backGroundColor;
   return (
     <div style={{ width: 'auto' }}>
       <CircularProgressbar
@@ -14,7 +15,8 @@ const TimerInterface = props => {
         backgroundPadding={6}
         styles={{
           background: {
-            fill: '#3e98c7'
+            fill: backGroundColor
+            // fill: '#3e98c7'
           },
           text: {
             fill: '#fff'

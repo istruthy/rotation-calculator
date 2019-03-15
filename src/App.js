@@ -108,6 +108,7 @@ class App extends Component {
                       percentRemaining={percentRemaining}
                       minutes={this.state.minutes}
                       seconds={this.state.seconds}
+                      backGroundColor={backGroundColor}
                     />
                     {/* <Timer minutes={this.state.minutes} seconds={this.state.seconds} /> */}
                   </div>
