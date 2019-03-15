@@ -6,6 +6,7 @@ import TimerWarningInput from './components/TimerWarningInput';
 // import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Container, Grid, Segment } from 'semantic-ui-react';
+import TimerCleanupInput from './components/TimerCleanupInput';
 
 // import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
@@ -124,7 +125,8 @@ class App extends Component {
                   <div className="col-md-4">
                     <TimerInput minutes={this.state.minutes} handleChange={this.handleChange} />
                     <TimerWarningInput warning={warning} handleChange={this.handleChange} />
-                    <Timer minutes={minutes} seconds={seconds} />
+                    <TimerCleanupInput />
+                    {/* <Timer minutes={minutes} seconds={seconds} /> */}
                     <StartButton startCountDown={this.startCountDown} minutes={minutes} />
                   </div>
                 </div>
