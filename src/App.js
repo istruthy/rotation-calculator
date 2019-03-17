@@ -8,6 +8,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { Grid, Form } from 'semantic-ui-react';
 import TimerCleanupInput from './components/TimerCleanupInput';
 import TimerInterface from './components/TimerInterface';
+import TimerSound from './components/TimmerSound';
 
 // import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
@@ -20,6 +21,8 @@ class App extends Component {
       warning: '14',
       cleanup: '1',
       secondsRemaining: null,
+      warningStatus: false,
+      cleanupStatus: false,
       isClicked: false
     };
     this.secondsRemaining = null;
@@ -46,7 +49,11 @@ class App extends Component {
       seconds: sec,
       secondsRemaining: this.secondsRemaining
     });
-
+    if (this.state.minutes < this.state.warning) {
+      this.setState({
+        warningStatus: true
+      });
+    }
     if (sec < 10) {
       this.setState({
         seconds: '0' + this.state.seconds
@@ -76,13 +83,13 @@ class App extends Component {
   }
 
   render() {
-    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup } = this.state;
+    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup, warningStatus } = this.state;
     let percentRemaining = Math.round((secondsRemaining / 900) * 100);
     // console.log('percent remaing', percentRemaining);
 
-    let backGroundColor = '#333';
+    let backGroundColor = '#6aff00';
     if (minutes < warning) {
-      backGroundColor = '#999';
+      backGroundColor = '#ffe900';
     }
     if (isClicked) {
       return (
@@ -97,7 +104,6 @@ class App extends Component {
         font-size: 5em!important;
       }
     `}</style>
-
           <Grid centered columns={2}>
             <Grid.Column textAlign="center">
               <div>
@@ -116,6 +122,7 @@ class App extends Component {
               </div>
             </Grid.Column>
           </Grid>
+          <TimerSound warningStatus={warningStatus} />
         </div>
       );
     } else {
@@ -141,7 +148,6 @@ class App extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        // </div>
       );
     }
   }
