@@ -3,12 +3,12 @@ import Timer from './components/Timer';
 import TimerInput from './components/TimerInput';
 import StartButton from './components/StartButton';
 import TimerWarningInput from './components/TimerWarningInput';
-// import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Grid, Form } from 'semantic-ui-react';
 import TimerCleanupInput from './components/TimerCleanupInput';
 import TimerInterface from './components/TimerInterface';
 import TimerSound from './components/TimmerSound';
+import RotationInput from './components/RotationInput';
 
 // import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
@@ -20,6 +20,7 @@ class App extends Component {
       minutes: '15',
       warning: '14',
       cleanup: '1',
+      rotations: '4',
       secondsRemaining: null,
       warningStatus: false,
       cleanupStatus: false,
@@ -27,17 +28,17 @@ class App extends Component {
     };
     this.secondsRemaining = null;
     this.intervalHandle = null;
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
     this.startCountDown = this.startCountDown.bind(this);
     this.tick = this.tick.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = event => {
     console.log('handleChange', event);
     this.setState({
       [event.target.name]: event.target.value
     });
-  }
+  };
 
   tick() {
     var min = Math.floor(this.secondsRemaining / 60);
@@ -83,7 +84,7 @@ class App extends Component {
   }
 
   render() {
-    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup, warningStatus } = this.state;
+    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup, warningStatus, rotations } = this.state;
     let percentRemaining = Math.round((secondsRemaining / 900) * 100);
     // console.log('percent remaing', percentRemaining);
 
@@ -127,15 +128,6 @@ class App extends Component {
       );
     } else {
       return (
-        // <div>
-        //   <style>{`
-        //   body > div,
-        //   body > div > div,
-        //   body > div > div > div.login-form {
-        //     height: 100%;
-        //   }
-        // `}</style>
-
         <Grid verticalAlign="middle" columns={4} centered>
           <Grid.Row>
             <Grid.Column>
@@ -143,6 +135,7 @@ class App extends Component {
                 <TimerInput minutes={this.state.minutes} handleChange={this.handleChange} />
                 <TimerWarningInput warning={warning} handleChange={this.handleChange} />
                 <TimerCleanupInput cleanup={cleanup} handleChange={this.handleChange} />
+                <RotationInput rotations={rotations} handleChange={this.handleChange} />
                 <StartButton startCountDown={this.startCountDown} minutes={minutes} />
               </Form>
             </Grid.Column>

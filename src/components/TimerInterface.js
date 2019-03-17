@@ -16,7 +16,6 @@ const TimerInterface = props => {
         styles={{
           background: {
             fill: backGroundColor
-            // fill: '#3e98c7'
           },
           text: {
             fill: '#fff'
