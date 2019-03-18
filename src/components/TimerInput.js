@@ -10,8 +10,8 @@ const TimerInput = props => {
         control="input"
         placeholder="minutes"
         type="number"
-        name="minutes"
-        value={props.minutes}
+        name="currentMinutes"
+        value={props.currentMinutes}
         onChange={props.handleChange}
       />
     </Form.Group>

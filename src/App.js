@@ -10,14 +10,13 @@ import TimerInterface from './components/TimerInterface';
 import TimerSound from './components/TimmerSound';
 import RotationInput from './components/RotationInput';
 
-// import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       seconds: '00',
       minutes: '15',
+      currentMinutes: '14',
       warning: '14',
       cleanup: '1',
       rotations: '4',
@@ -28,9 +27,6 @@ class App extends Component {
     };
     this.secondsRemaining = null;
     this.intervalHandle = null;
-    // this.handleChange = this.handleChange.bind(this);
-    this.startCountDown = this.startCountDown.bind(this);
-    this.tick = this.tick.bind(this);
   }
 
   handleChange = event => {
@@ -40,9 +36,10 @@ class App extends Component {
     });
   };
 
-  tick() {
-    var min = Math.floor(this.secondsRemaining / 60);
-    var sec = this.secondsRemaining - min * 60;
+  tick = () => {
+    let min = Math.floor(this.secondsRemaining / 60);
+    let sec = this.secondsRemaining - min * 60;
+
     console.log('seconds remaining ', this.secondsRemaining);
 
     this.setState({
@@ -50,11 +47,13 @@ class App extends Component {
       seconds: sec,
       secondsRemaining: this.secondsRemaining
     });
+
     if (this.state.minutes < this.state.warning) {
       this.setState({
         warningStatus: true
       });
     }
+
     if (sec < 10) {
       this.setState({
         seconds: '0' + this.state.seconds
@@ -68,31 +67,57 @@ class App extends Component {
     }
 
     if ((min === 0) & (sec === 0)) {
-      clearInterval(this.intervalHandle);
+      if (this.state.rotations > 0) {
+        this.startCountDown();
+      } else {
+        clearInterval(this.intervalHandle);
+      }
     }
 
     this.secondsRemaining--;
-  }
+  };
 
-  startCountDown() {
+  startCountDown = () => {
+    let time = this.state.currentMinutes;
+    let warning = this.state.warning;
+    let rotations = this.state.rotations;
     this.intervalHandle = setInterval(this.tick, 1000);
-    let time = this.state.minutes;
     this.secondsRemaining = time * 60;
+
+    if (warning < 10) {
+      this.setState({
+        warning: '0' + warning
+      });
+    }
+
     this.setState({
-      isClicked: true
+      isClicked: true,
+      rotations: rotations--
     });
-  }
+  };
 
   render() {
-    const { minutes, warning, seconds, isClicked, secondsRemaining, cleanup, warningStatus, rotations } = this.state;
-    let percentRemaining = Math.round((secondsRemaining / 900) * 100);
-    // console.log('percent remaing', percentRemaining);
-
+    const {
+      minutes,
+      warning,
+      seconds,
+      isClicked,
+      secondsRemaining,
+      cleanup,
+      warningStatus,
+      rotations,
+      currentMinutes
+    } = this.state;
+    const warningAlert = warning * 60;
+    let percentRemaining = Math.round((secondsRemaining / warningAlert) * 100);
     let backGroundColor = '#6aff00';
+
     if (minutes < warning) {
       backGroundColor = '#ffe900';
     }
+
     if (isClicked) {
+      console.log('state ', this.state);
       return (
         <div>
           <style>{`
@@ -113,8 +138,8 @@ class App extends Component {
                   <div className="col-md-4">
                     <TimerInterface
                       percentRemaining={percentRemaining}
-                      minutes={this.state.minutes}
-                      seconds={this.state.seconds}
+                      minutes={minutes}
+                      seconds={seconds}
                       backGroundColor={backGroundColor}
                     />
                     {/* <Timer minutes={this.state.minutes} seconds={this.state.seconds} /> */}
@@ -132,7 +157,7 @@ class App extends Component {
           <Grid.Row>
             <Grid.Column>
               <Form>
-                <TimerInput minutes={this.state.minutes} handleChange={this.handleChange} />
+                <TimerInput minutes={currentMinutes} handleChange={this.handleChange} />
                 <TimerWarningInput warning={warning} handleChange={this.handleChange} />
                 <TimerCleanupInput cleanup={cleanup} handleChange={this.handleChange} />
                 <RotationInput rotations={rotations} handleChange={this.handleChange} />
